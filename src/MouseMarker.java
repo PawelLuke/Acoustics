@@ -3,8 +3,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.Date;
-import javax.swing.JTextField;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.IntervalMarker;
@@ -12,89 +10,66 @@ import org.jfree.chart.plot.Marker;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.ui.Layer;
 
-/**
- *
- * @author Luck
- */
-public class MouseMarker extends MouseAdapter {
+public class MouseMarker extends MouseAdapter{
 
         private Marker marker;
         private Double timeMarkerStart = Double.NaN;
         private Double timeMarkerEnd = Double.NaN;
-        private final XYPlot plot;
-        private final JFreeChart chart;
-        private final ChartPanel panel;
+        private final XYPlot xyp;
+        private final JFreeChart jfc;
+        private final ChartPanel cp;
 
-        public MouseMarker(ChartPanel panel) 
-        {
-            this.panel = panel;
-            this.chart = panel.getChart();
-            this.plot = (XYPlot) chart.getPlot();
+        public MouseMarker(ChartPanel chartPnl){
+            this.cp = chartPnl;
+            this.jfc = chartPnl.getChart();
+            this.xyp =  jfc.getXYPlot();
         }
         
-        //Return index of specific time in Data and LAeq array
-        int indexOf(double time) {
-            int index = 0;
-            for (var array : DataMeter.dateFromMeter) {
-                //array[0] <- data array
-                if (array == time) {
-                    return index;
-                }
-                index++;
-            }
-            return -1;
-        }
-
-        void setMarkersOnArrayWithDate() {
-            int startIndex = indexOf(timeMarkerStart);
-            int lenghtMarker = (int) (timeMarkerEnd - timeMarkerStart) / 1000;
-
-            for (int i = startIndex; i <= lenghtMarker+startIndex; i++) {
-                Function_Chart.csvFileFlgs.set(i, Boolean.FALSE);
-            }
-        }
-
-        private double round(double value) {
+        private double roundMs(double value){
             return (double) Math.round(value / 1000) * 1000;
         }
 
-        private void getMarker() {
-
+        private void getMarker(){
             if (!(timeMarkerStart.isNaN() && timeMarkerEnd.isNaN())) {
                 if (timeMarkerEnd > timeMarkerStart) {
 
-                    //Time rouned to second
-                    timeMarkerStart = round(timeMarkerStart);
-                    timeMarkerEnd = round(timeMarkerEnd);
-
-                    setMarkersOnArrayWithDate();
+                    timeMarkerStart = roundMs(timeMarkerStart);
+                    timeMarkerEnd = roundMs(timeMarkerEnd);
                     marker = new IntervalMarker(timeMarkerStart, timeMarkerEnd);
                     marker.setPaint(new Color(255, 0, 0, 255));
-                    plot.addDomainMarker(marker,Layer.BACKGROUND);
-                    //Update Leq label
-                    Calculation.getInstance().updateLaeq();
+                    xyp.addDomainMarker(marker,Layer.BACKGROUND);
                     Main.getInstance().setTextStartTime(timeMarkerStart);
                     Main.getInstance().setTextStopTime(timeMarkerEnd);
                 }
             }
         }
+        
+        private void setFlags(){
+            if (!(timeMarkerStart.isNaN() && timeMarkerEnd.isNaN()))            {
+                if (timeMarkerEnd > timeMarkerStart)                {
+                    double roundStart = roundMs(timeMarkerStart);
+                    double roundEnd = roundMs(timeMarkerEnd);
+                    new MouseMarkerFlags().setFlagsMarker(roundStart,roundEnd);
+                }
+            }
+        }
 
-        private Double getPosition(MouseEvent e) 
-        {
-            Point2D p = panel.translateScreenToJava2D(e.getPoint());
-            Rectangle2D plotArea = panel.getScreenDataArea();
-            XYPlot plot = (XYPlot) chart.getPlot();
-            return plot.getDomainAxis().java2DToValue(p.getX(), plotArea, plot.getDomainAxisEdge());
+        private Double getPosition(MouseEvent e){
+            Point2D p = cp.translateScreenToJava2D(e.getPoint());
+            Rectangle2D plotArea = cp.getScreenDataArea();
+            return xyp.getDomainAxis().java2DToValue(p.getX(), plotArea, xyp.getDomainAxisEdge());
         }
 
         @Override
-        public void mouseReleased(MouseEvent e) {
+        public void mouseReleased(MouseEvent e){
             timeMarkerEnd = getPosition(e);
             getMarker();
+            setFlags();
+            new Calculation().updateLaeq();
         }
 
         @Override
-        public void mousePressed(MouseEvent e) {
+        public void mousePressed(MouseEvent e){
             timeMarkerStart = getPosition(e);
         }
     }

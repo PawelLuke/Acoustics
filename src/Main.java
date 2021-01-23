@@ -1,18 +1,28 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.JPanel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.IntervalMarker;
+import org.jfree.chart.plot.Marker;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.data.time.Millisecond;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.ui.Layer;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 public class Main extends javax.swing.JFrame
 {
     private static Main instance;
     private Main() 
     {
         initComponents();
+        //initJPanel();
+        
     }
     
     public static Main getInstance()
@@ -24,11 +34,29 @@ public class Main extends javax.swing.JFrame
         return instance;
     }
     
-   public void  setTextLaeq(String txtLeq)
+   private void initJPanel()
+   {
+       jPanel1.setLayout(new BorderLayout());
+   }
+    
+   public void  setTextLeq(String txtLeq)
    {
        this.txtLeq.setText(txtLeq);
    }
    
+   public void setChartPanel(ChartPanel cp)
+   {
+     jPanel1.add(cp);   
+     jPanel1.validate();
+   }
+   
+   public JPanel getJPanel1()
+   {
+       return jPanel1;
+   }
+
+
+    //TODO -> Move it in diffrent place
    private String msToDate(double timeInMs)
    {
        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
@@ -67,6 +95,7 @@ public class Main extends javax.swing.JFrame
         txtStopTime = new javax.swing.JTextField();
         lbStopTime = new javax.swing.JLabel();
         txtStartTime = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -94,6 +123,11 @@ public class Main extends javax.swing.JFrame
         );
 
         btnNewMarker.setText("Dodaj marker");
+        btnNewMarker.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewMarkerActionPerformed(evt);
+            }
+        });
 
         txtLeq.setText("Load data");
         txtLeq.setEnabled(false);
@@ -132,6 +166,13 @@ public class Main extends javax.swing.JFrame
             }
         });
 
+        jButton2.setText("TEST");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -145,29 +186,36 @@ public class Main extends javax.swing.JFrame
                 .addGap(18, 18, 18)
                 .addComponent(txtLeq, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnNewMarker, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnLoadData, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbStopTime, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lbStartTime, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtStartTime, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
-                    .addComponent(txtStopTime))
-                .addGap(139, 139, 139))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 325, Short.MAX_VALUE)
+                                .addComponent(lbStopTime))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lbStartTime)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtStartTime, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
+                            .addComponent(txtStopTime))
+                        .addGap(139, 139, 139))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnNewMarker, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnLoadData, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbStartTime)
-                    .addComponent(txtStartTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtStartTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtStopTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -189,19 +237,61 @@ public class Main extends javax.swing.JFrame
     private void txtLeqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLeqActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtLeqActionPerformed
-
-    void initJPanel()
+    
+    /**
+     * Get array of time nad Leq and put in in JPanel
+     * @param arrayOfarray 
+     */
+    ChartPanel setDataToJPanel(ArrayList<ArrayList<Double>> arraytimeAndLeq)
     {
-     jPanel1.setLayout(new BorderLayout());
-     jPanel1.add(new Function_Chart().getChartPanel());
-     jPanel1.validate();
-      this.getContentPane().add(jPanel1);
+    ArrayList<Double> timeArray = arraytimeAndLeq.get(Constant.IDX_DATE);
+    ArrayList<Double> leqArray = arraytimeAndLeq.get(Constant.IDX_LEQ);
+    TimeSeries ts = new DataMeterTs().getTimeSeries(timeArray, leqArray);
+    TimeSeriesCollection tsc = new DataMeterTsc().getAndsetTimeSeriesCollection(ts);
+    JFreeChart jfc = Function_Chart.getInstance().getJFreeChart(tsc);
+    ChartPanel cp = Function_Chart.getInstance().getChartPanel(jfc);
+    jPanel1.setLayout(new BorderLayout());
+    jPanel1.add(cp,BorderLayout.CENTER);
+    jPanel1.validate();
+    return cp;
+    }
+    
+    private ArrayList<ArrayList<Double>> getDataTroughtAdapter(DMEnvironment enviormentNoise)
+    {
+       ArrayList<String[]> arrayFromMeter = enviormentNoise.getCSVFromMeter();
+       ArrayList<Double> dataArray = enviormentNoise.setDateArray(arrayFromMeter);
+       ArrayList<Double> leqArray = enviormentNoise.setLeqArray(arrayFromMeter);
+       ArrayList<ArrayList<Double>> array = new ArrayList<>();
+       array.add(dataArray);
+       array.add(leqArray);
+       return array;
+    }
+    
+//    private void setFlagsForMarkers()
+//    {
+//        var listOfArray = DataMeter.getInstance().getArrayOfLeq();
+//        for(var list :listOfArray )
+//        {
+//            for(var leq:list)
+//            {
+//                //Function_Chart.csvFileFlgs.add(true);
+//            }
+//        }
+//    }
+    
+    private void setMouseListener(ChartPanel cp)
+    {
+       cp.addMouseListener(new MouseMarker(cp));
     }
     
     private void btnLoadDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadDataActionPerformed
-     new DataMeter_Adapter().getDataFromMeter();
-     initJPanel();
-     Calculation.getInstance().updateLaeq();
+         //TODO -> Make more adapter and use strategy adapter
+        DMEnvironment enviormentNoise = new DMAdapter958v1();
+        ArrayList<ArrayList<Double>> dateAndLeqFromAdapter = getDataTroughtAdapter(enviormentNoise);
+        new MouseMarkerFlags().setNewArray(dateAndLeqFromAdapter);
+        ChartPanel cp = setDataToJPanel(dateAndLeqFromAdapter);
+        setMouseListener(cp);
+         new Calculation().updateLaeq();
     }//GEN-LAST:event_btnLoadDataActionPerformed
 
     private void txtStopTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStopTimeActionPerformed
@@ -211,6 +301,49 @@ public class Main extends javax.swing.JFrame
     private void txtStartTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStartTimeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtStartTimeActionPerformed
+
+    private void btnNewMarkerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewMarkerActionPerformed
+      //Function_Chart.getInstance().clearChart();
+    }//GEN-LAST:event_btnNewMarkerActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
+        //Wczytaj dane i umiesc je w katalogu dla TIme series collection
+        
+        
+        
+        //Stworz TimeSeries - Czesc "Load" - Wczesniej sprawdz czy to jest plik CSV
+        TimeSeries nullseries = new TimeSeries(Constant.SERIES_NULL);
+        Date date = new Date((long)1.607894000E12);
+        var rtp = new Millisecond(date);
+        nullseries.add(rtp, 56.1);
+ 
+        //Czesc "Niezalezna od "Load"
+        //Dodaj TimeSeries do kolekcji - po każdorazowym wrzytaniu nowych danych, dodawaj kolejne serie
+        TimeSeriesCollection tsc = new TimeSeriesCollection();
+        tsc.addSeries(nullseries);
+        
+        //Stworz nowa chartFactory - w tym przypadku time series, ale może być też inna
+        var jfc = ChartFactory.createTimeSeriesChart("LAeq", "Godzina", "LAeq dB", tsc, false, false, false);
+        
+        //stworz nowy chart panel - chart panel moze przyjmować różne jfc
+        ChartPanel cp = new ChartPanel(jfc);
+        
+        //Inicjalizacja
+        jPanel1.setLayout(new BorderLayout());
+        
+        //Dodanie chart panel do Panelu
+        jPanel1.add(cp);
+        jPanel1.validate();
+        
+//                    Marker  marker = new IntervalMarker(1.607894050E12, 1.607894090E12);
+//                    marker.setPaint(new Color(255, 0, 0, 255));
+//                    jfc.getXYPlot().addDomainMarker(marker,Layer.BACKGROUND);
+        
+      //  Main.getInstance().setChartPanel(cp);
+        
+        //Function_Chart.getInstance().initNullChart();
+    }//GEN-LAST:event_jButton2ActionPerformed
     
     /**
      * @param args the command line arguments
@@ -252,6 +385,7 @@ public class Main extends javax.swing.JFrame
     private javax.swing.JButton btnLoadData;
     private javax.swing.JButton btnNewMarker;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JMenuItem jMenuItem1;
