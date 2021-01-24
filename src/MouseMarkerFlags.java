@@ -5,7 +5,6 @@ public class MouseMarkerFlags
     Double timeMarkerStart;
     Double timeMarkerEnd;
     
-    
     public void setMarkerFlags(ArrayList<Boolean> array)
     {
         dataMeterFlags.add(array);

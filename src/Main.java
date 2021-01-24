@@ -1,5 +1,4 @@
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,13 +6,9 @@ import javax.swing.JPanel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.IntervalMarker;
-import org.jfree.chart.plot.Marker;
-import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.time.Millisecond;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
-import org.jfree.ui.Layer;
 
 public class Main extends javax.swing.JFrame
 {
@@ -21,8 +16,6 @@ public class Main extends javax.swing.JFrame
     private Main() 
     {
         initComponents();
-        //initJPanel();
-        
     }
     
     public static Main getInstance()
@@ -54,23 +47,17 @@ public class Main extends javax.swing.JFrame
    {
        return jPanel1;
    }
-
-
-    //TODO -> Move it in diffrent place
-   private String msToDate(double timeInMs)
-   {
-       SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-       return sdf.format(new Date((long) timeInMs));
-   }
    
    public void  setTextStartTime(double txtStartTime)
    {
-       this.txtStartTime.setText(msToDate(txtStartTime));
+       String txt = new Converter().msToDate(txtStartTime);
+       this.txtStartTime.setText(txt);
    }
       
     public void  setTextStopTime(double txtStopTime)
    {
-       this.txtStopTime.setText(msToDate(txtStopTime));
+       String txt = new Converter().msToDate(txtStopTime);
+       this.txtStopTime.setText(txt);
    }
     
     /**
@@ -237,19 +224,109 @@ public class Main extends javax.swing.JFrame
     private void txtLeqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLeqActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtLeqActionPerformed
+    /**
+     * If between data exist gap, insert time between data and set null value for leq
+     * @param time
+     * @param leq
+     * @return 
+     */
+    private ArrayList<ArrayList<Double>> getArrayWithoutGap(ArrayList<Double> time, ArrayList<Double> leq)
+    {
+        ArrayList<Double> tmpTime = time;
+        ArrayList<Double> tmpLeq = leq;
+        ArrayList<ArrayList<Double>> timeAndLeq = new ArrayList<>();
+        ArrayList<Integer> idxToAdd = new ArrayList<>();
+        Double tmpStartTime;
+        double tm1;
+        double tm2;
+        int tmSize;
+        double tmpDouble;
+        
+        int sizeOfArray = time.size();
+        for(int i=0;i<(sizeOfArray-1);i++){
+            
+            tmpDouble = time.get(i);
+            tm1 = new Converter().roundMs(tmpDouble);
+            tmpDouble = time.get(i+1);
+            tm2 = new Converter().roundMs(tmpDouble);
+            
+            if((tm1+1000)!=(tm2))
+            {
+                tmSize = (int)(tm2 - tm1)/1000;
+                for(int j=i;j<(tmSize+i)-1;j++){
+                    idxToAdd.add(j+1);
+                }
+            }
+        }
+        
+        tmpStartTime = time.get(Constant.IDX_DATE);
+        for(var idx:idxToAdd)
+        {
+            tmpTime.add(idx,tmpStartTime+idx*1000);
+            tmpLeq.add(idx,null);
+            //Add here flags too;
+        }
+        
+        //Add here flags too;
+        timeAndLeq.add(tmpTime);
+        timeAndLeq.add(tmpLeq);
+        
+        return timeAndLeq;
+    }
+    
+    /**
+     * Create Time series and check if few time series have gap
+     * @param time
+     * @param leq
+     * @return 
+     */
+    private TimeSeries getTimeSeries(ArrayList<Double> time,ArrayList<Double> leq)
+    {
+        return new DataMeterTs().getTimeSeries(time, leq);
+    }
+    
+    private ArrayList<ArrayList<Double>> getMergedArray(ArrayList<ArrayList<Double>> time, ArrayList<ArrayList<Double>> leq)
+    {
+        ArrayList<ArrayList<Double>> tmpTimeAndLeq = new ArrayList<>();
+        ArrayList<Double> tmpTime = new ArrayList<>();
+        ArrayList<Double> tmpLeq = new ArrayList<>();
+        
+        int sizeA = time.size();
+        int sizeB;
+        
+        for(int i=0;i<sizeA;i++)
+        {
+            sizeB = time.get(i).size();
+            for(int j=0;j<sizeB;j++)
+            {
+                tmpTime.add(time.get(i).get(j));
+                tmpLeq.add(leq.get(i).get(j));
+            }
+        }
+        
+        tmpTimeAndLeq.add(tmpTime);
+        tmpTimeAndLeq.add(tmpLeq);
+        
+        return tmpTimeAndLeq;
+    }
     
     /**
      * Get array of time nad Leq and put in in JPanel
      * @param arrayOfarray 
      */
-    ChartPanel setDataToJPanel(ArrayList<ArrayList<Double>> arraytimeAndLeq)
+    ChartPanel setDataToJPanel()
     {
-    ArrayList<Double> timeArray = arraytimeAndLeq.get(Constant.IDX_DATE);
-    ArrayList<Double> leqArray = arraytimeAndLeq.get(Constant.IDX_LEQ);
-    TimeSeries ts = new DataMeterTs().getTimeSeries(timeArray, leqArray);
+    var timeArray = DataMeter.getInstance().getArrayOfDate();
+    var leqArray = DataMeter.getInstance().getArrayOfLeq();
+    var mergedArray = getMergedArray(timeArray, leqArray);
+    var awg = getArrayWithoutGap(mergedArray.get(Constant.IDX_DATE), mergedArray.get(Constant.IDX_LEQ));
+    TimeSeries ts = getTimeSeries(awg.get(Constant.IDX_DATE), awg.get(Constant.IDX_LEQ));
     TimeSeriesCollection tsc = new DataMeterTsc().getAndsetTimeSeriesCollection(ts);
     JFreeChart jfc = Function_Chart.getInstance().getJFreeChart(tsc);
     ChartPanel cp = Function_Chart.getInstance().getChartPanel(jfc);
+    cp.setRangeZoomable(true);
+    cp.setDomainZoomable(true);
+    
     jPanel1.setLayout(new BorderLayout());
     jPanel1.add(cp,BorderLayout.CENTER);
     jPanel1.validate();
@@ -267,31 +344,18 @@ public class Main extends javax.swing.JFrame
        return array;
     }
     
-//    private void setFlagsForMarkers()
-//    {
-//        var listOfArray = DataMeter.getInstance().getArrayOfLeq();
-//        for(var list :listOfArray )
-//        {
-//            for(var leq:list)
-//            {
-//                //Function_Chart.csvFileFlgs.add(true);
-//            }
-//        }
-//    }
-    
     private void setMouseListener(ChartPanel cp)
     {
        cp.addMouseListener(new MouseMarker(cp));
     }
     
     private void btnLoadDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadDataActionPerformed
-         //TODO -> Make more adapter and use strategy adapter
         DMEnvironment enviormentNoise = new DMAdapter958v1();
         ArrayList<ArrayList<Double>> dateAndLeqFromAdapter = getDataTroughtAdapter(enviormentNoise);
         new MouseMarkerFlags().setNewArray(dateAndLeqFromAdapter);
-        ChartPanel cp = setDataToJPanel(dateAndLeqFromAdapter);
+        ChartPanel cp = setDataToJPanel();
         setMouseListener(cp);
-         new Calculation().updateLaeq();
+        new Calculation().updateLaeq();
     }//GEN-LAST:event_btnLoadDataActionPerformed
 
     private void txtStopTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStopTimeActionPerformed

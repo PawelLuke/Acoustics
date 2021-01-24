@@ -24,10 +24,16 @@ public class DataMeterTs
             timeInms=timeArray.get(i);
             Date date = new Date((long) timeInms);
             rtp = new Millisecond(date);
-            leq = leqArray.get(i);
-            ts.add(rtp, leq);
+            
+            if(leqArray.get(i)!= null)
+            {
+                leq = leqArray.get(i);
+                ts.addOrUpdate(rtp, leq);
+            }else
+            {
+                 ts.addOrUpdate(rtp, null);
+            }
         }
-        
         return ts;
     }
 }

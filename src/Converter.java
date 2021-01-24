@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.jfree.data.time.Millisecond;
 import org.jfree.data.time.RegularTimePeriod;
 import org.jfree.data.time.Second;
@@ -83,4 +85,14 @@ public class Converter
         }
         return new Millisecond(0, intSecond, intMinute, intHour, intDay, intMonth, intYear);
     }
+     
+   public String msToDate(double timeInMs)
+   {
+       SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+       return sdf.format(new Date((long) timeInMs));
+   }
+   
+   public double roundMs(double value){
+       return (double) Math.round(value / 1000) * 1000;
+   }
 }

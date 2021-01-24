@@ -30,8 +30,8 @@ public class MouseMarker extends MouseAdapter{
         }
 
         private void getMarker(){
-            if (!(timeMarkerStart.isNaN() && timeMarkerEnd.isNaN())) {
-                if (timeMarkerEnd > timeMarkerStart) {
+            if (!(timeMarkerStart.isNaN() && timeMarkerEnd.isNaN())){
+                if (timeMarkerEnd > timeMarkerStart){
 
                     timeMarkerStart = roundMs(timeMarkerStart);
                     timeMarkerEnd = roundMs(timeMarkerEnd);
@@ -45,8 +45,8 @@ public class MouseMarker extends MouseAdapter{
         }
         
         private void setFlags(){
-            if (!(timeMarkerStart.isNaN() && timeMarkerEnd.isNaN()))            {
-                if (timeMarkerEnd > timeMarkerStart)                {
+            if (!(timeMarkerStart.isNaN() && timeMarkerEnd.isNaN())){
+                if (timeMarkerEnd > timeMarkerStart){
                     double roundStart = roundMs(timeMarkerStart);
                     double roundEnd = roundMs(timeMarkerEnd);
                     new MouseMarkerFlags().setFlagsMarker(roundStart,roundEnd);
