@@ -7,13 +7,12 @@ import org.jfree.data.time.TimeSeries;
 public class DataMeterTs 
 {
     /**
-     * Get time series and put it in Time Series Collection
+     * put here array with time in ms and Leq value
      * @param timeArray
      * @param leqArray
-     * @return 
+     * @return TimeSeries, set it to TimeSeriesCollection 
      */
-    public TimeSeries getTimeSeries(ArrayList<Double> timeArray, ArrayList<Double> leqArray)
-    {
+    public TimeSeries getTimeSeries(ArrayList<Double> timeArray, ArrayList<Double> leqArray){
         double timeInms;
         double leq;
         RegularTimePeriod rtp;

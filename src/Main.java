@@ -74,7 +74,6 @@ public class Main extends javax.swing.JFrame
         jButton3 = new javax.swing.JButton();
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         jPanel1 = new javax.swing.JPanel();
-        btnNewMarker = new javax.swing.JButton();
         txtLeq = new javax.swing.JTextField();
         lbLeq = new javax.swing.JLabel();
         btnLoadData = new javax.swing.JButton();
@@ -82,7 +81,10 @@ public class Main extends javax.swing.JFrame
         txtStopTime = new javax.swing.JTextField();
         lbStopTime = new javax.swing.JLabel();
         txtStartTime = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
+        sprAutoMarker = new javax.swing.JSpinner();
+        btnAutoMarker = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        listOfMarker = new javax.swing.JPanel();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -102,19 +104,12 @@ public class Main extends javax.swing.JFrame
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 898, Short.MAX_VALUE)
+            .addGap(0, 896, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 298, Short.MAX_VALUE)
+            .addGap(0, 385, Short.MAX_VALUE)
         );
-
-        btnNewMarker.setText("Dodaj marker");
-        btnNewMarker.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNewMarkerActionPerformed(evt);
-            }
-        });
 
         txtLeq.setText("Load data");
         txtLeq.setEnabled(false);
@@ -153,67 +148,98 @@ public class Main extends javax.swing.JFrame
             }
         });
 
-        jButton2.setText("TEST");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnAutoMarker.setText("AutoMarker");
+        btnAutoMarker.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnAutoMarkerActionPerformed(evt);
             }
         });
+
+        listOfMarker.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout listOfMarkerLayout = new javax.swing.GroupLayout(listOfMarker);
+        listOfMarker.setLayout(listOfMarkerLayout);
+        listOfMarkerLayout.setHorizontalGroup(
+            listOfMarkerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 179, Short.MAX_VALUE)
+        );
+        listOfMarkerLayout.setVerticalGroup(
+            listOfMarkerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(listOfMarker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(listOfMarker, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 91, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(251, 251, 251)
-                .addComponent(lbLeq)
-                .addGap(18, 18, 18)
-                .addComponent(txtLeq, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(sprAutoMarker, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAutoMarker, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(151, 151, 151)
+                        .addComponent(lbLeq)
+                        .addGap(0, 0, 0)
+                        .addComponent(txtLeq, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnLoadData, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(40, 40, 40)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 325, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(lbStopTime))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lbStartTime)))
+                            .addComponent(lbStartTime, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtStartTime, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
-                            .addComponent(txtStopTime))
-                        .addGap(139, 139, 139))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnNewMarker, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnLoadData, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(txtStartTime, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtStopTime, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(45, 45, 45))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbStartTime)
-                    .addComponent(txtStartTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtStopTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbStopTime))
-                .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtLeq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbLeq)
-                    .addComponent(btnNewMarker)
-                    .addComponent(btnLoadData))
-                .addGap(39, 39, 39))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtLeq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbLeq)
+                            .addComponent(btnLoadData))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(lbStartTime)
+                                .addComponent(txtStartTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txtStopTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lbStopTime))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(sprAutoMarker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAutoMarker))))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         jPanel1.getAccessibleContext().setAccessibleName("");
@@ -322,8 +348,8 @@ public class Main extends javax.swing.JFrame
     var awg = getArrayWithoutGap(mergedArray.get(Constant.IDX_DATE), mergedArray.get(Constant.IDX_LEQ));
     TimeSeries ts = getTimeSeries(awg.get(Constant.IDX_DATE), awg.get(Constant.IDX_LEQ));
     TimeSeriesCollection tsc = new DataMeterTsc().getAndsetTimeSeriesCollection(ts);
-    JFreeChart jfc = Function_Chart.getInstance().getJFreeChart(tsc);
-    ChartPanel cp = Function_Chart.getInstance().getChartPanel(jfc);
+     JFreeChart jfc = new ChartJfreeChart().getJFreeChart(tsc);
+    ChartPanel cp = ChartPnl.getInstance().getChartPanel(jfc);
     cp.setRangeZoomable(true);
     cp.setDomainZoomable(true);
     
@@ -335,9 +361,9 @@ public class Main extends javax.swing.JFrame
     
     private ArrayList<ArrayList<Double>> getDataTroughtAdapter(DMEnvironment enviormentNoise)
     {
-       ArrayList<String[]> arrayFromMeter = enviormentNoise.getCSVFromMeter();
-       ArrayList<Double> dataArray = enviormentNoise.setDateArray(arrayFromMeter);
-       ArrayList<Double> leqArray = enviormentNoise.setLeqArray(arrayFromMeter);
+       ArrayList<String[]> arrayFromMeter = enviormentNoise.getCSVFromFile();
+       ArrayList<Double> dataArray = enviormentNoise.getDateArray(arrayFromMeter);
+       ArrayList<Double> leqArray = enviormentNoise.getLeqArray(arrayFromMeter);
        ArrayList<ArrayList<Double>> array = new ArrayList<>();
        array.add(dataArray);
        array.add(leqArray);
@@ -352,10 +378,11 @@ public class Main extends javax.swing.JFrame
     private void btnLoadDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadDataActionPerformed
         DMEnvironment enviormentNoise = new DMAdapter958v1();
         ArrayList<ArrayList<Double>> dateAndLeqFromAdapter = getDataTroughtAdapter(enviormentNoise);
-        new MouseMarkerFlags().setNewArray(dateAndLeqFromAdapter);
+        new DataFlags().setFlagsArray(dateAndLeqFromAdapter);
         ChartPanel cp = setDataToJPanel();
+        ChartMarker.getInstance().initialization(cp);
         setMouseListener(cp);
-        new Calculation().updateLaeq();
+        new Calculation().updateLeq();
     }//GEN-LAST:event_btnLoadDataActionPerformed
 
     private void txtStopTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStopTimeActionPerformed
@@ -366,48 +393,12 @@ public class Main extends javax.swing.JFrame
         // TODO add your handling code here:
     }//GEN-LAST:event_txtStartTimeActionPerformed
 
-    private void btnNewMarkerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewMarkerActionPerformed
-      //Function_Chart.getInstance().clearChart();
-    }//GEN-LAST:event_btnNewMarkerActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
-        //Wczytaj dane i umiesc je w katalogu dla TIme series collection
-        
-        
-        
-        //Stworz TimeSeries - Czesc "Load" - Wczesniej sprawdz czy to jest plik CSV
-        TimeSeries nullseries = new TimeSeries(Constant.SERIES_NULL);
-        Date date = new Date((long)1.607894000E12);
-        var rtp = new Millisecond(date);
-        nullseries.add(rtp, 56.1);
- 
-        //Czesc "Niezalezna od "Load"
-        //Dodaj TimeSeries do kolekcji - po każdorazowym wrzytaniu nowych danych, dodawaj kolejne serie
-        TimeSeriesCollection tsc = new TimeSeriesCollection();
-        tsc.addSeries(nullseries);
-        
-        //Stworz nowa chartFactory - w tym przypadku time series, ale może być też inna
-        var jfc = ChartFactory.createTimeSeriesChart("LAeq", "Godzina", "LAeq dB", tsc, false, false, false);
-        
-        //stworz nowy chart panel - chart panel moze przyjmować różne jfc
-        ChartPanel cp = new ChartPanel(jfc);
-        
-        //Inicjalizacja
-        jPanel1.setLayout(new BorderLayout());
-        
-        //Dodanie chart panel do Panelu
-        jPanel1.add(cp);
-        jPanel1.validate();
-        
-//                    Marker  marker = new IntervalMarker(1.607894050E12, 1.607894090E12);
-//                    marker.setPaint(new Color(255, 0, 0, 255));
-//                    jfc.getXYPlot().addDomainMarker(marker,Layer.BACKGROUND);
-        
-      //  Main.getInstance().setChartPanel(cp);
-        
-        //Function_Chart.getInstance().initNullChart();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btnAutoMarkerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAutoMarkerActionPerformed
+        int autoMarker = sprAutoMarker.getValue().hashCode();
+        new DataFlags().setFlagsMarker(autoMarker);
+        ChartMarker.getInstance().setFlagsMarker(autoMarker);
+        new Calculation().updateLeq();
+    }//GEN-LAST:event_btnAutoMarkerActionPerformed
     
     /**
      * @param args the command line arguments
@@ -446,17 +437,19 @@ public class Main extends javax.swing.JFrame
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAutoMarker;
     private javax.swing.JButton btnLoadData;
-    private javax.swing.JButton btnNewMarker;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lbLeq;
     private javax.swing.JLabel lbStartTime;
     private javax.swing.JLabel lbStopTime;
+    private javax.swing.JPanel listOfMarker;
+    private javax.swing.JSpinner sprAutoMarker;
     private javax.swing.JTextField txtLeq;
     private javax.swing.JTextField txtStartTime;
     private javax.swing.JTextField txtStopTime;

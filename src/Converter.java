@@ -5,20 +5,19 @@ import org.jfree.data.time.RegularTimePeriod;
 import org.jfree.data.time.Second;
 import org.jfree.data.time.Year;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- *
- * @author Luck
+ * Convert one data for another
+ * @author Pawel Lak
  */
-public class Converter
-{
-     public RegularTimePeriod getTimeInMsFromRow(String date) {
-         if (date == null) {
+public class Converter{
+   /**
+     * Convert time in "20.01.1970 13:30" format to milisecond
+     * @param date
+     * @return 
+     */
+   public RegularTimePeriod getTimeInMsFromRow(String date) {
+        if (date == null)
+        {
             return new Second(0, 0, 15, 1, 1, 2020);
         }
 
@@ -85,13 +84,20 @@ public class Converter
         }
         return new Millisecond(0, intSecond, intMinute, intHour, intDay, intMonth, intYear);
     }
-     
-   public String msToDate(double timeInMs)
-   {
+   /**
+    * Convert ms to date in format "HH:mm:ss"
+    * @param timeInMs
+    * @return 
+    */
+   public String msToDate(double timeInMs){
        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
        return sdf.format(new Date((long) timeInMs));
    }
-   
+   /**
+    * Round ms to full second, and convert it to ms
+    * @param value
+    * @return 
+    */
    public double roundMs(double value){
        return (double) Math.round(value / 1000) * 1000;
    }

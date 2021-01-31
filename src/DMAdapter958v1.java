@@ -5,11 +5,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import org.jfree.data.time.RegularTimePeriod;
 
+/**
+ * Get time and Leq from Svan 958
+ * @author Pawel Lak
+ */
 public class DMAdapter958v1 implements DMEnvironment
-{
+{   /**
+    * get data located in CSV file
+    * @return 
+    */
     @Override
-    public ArrayList<String[]> getCSVFromMeter()
-    {
+    public ArrayList<String[]> getCSVFromFile(){
         ArrayList<String[]> array = new ArrayList<>();
         File file = new Function_File().getFile();
         String extension = new Function_File().getFileExtension(file);
@@ -29,8 +35,7 @@ public class DMAdapter958v1 implements DMEnvironment
      * @return 
      */
     @Override
-    public ArrayList<Double> setDateArray(ArrayList<String[]> arrayCsv)
-    {
+    public ArrayList<Double> getDateArray(ArrayList<String[]> arrayCsv){
         ArrayList<Double> dateMsArray = new ArrayList<>();
         double timeInMs;
          for (int i = Constant.IDX_START_CSV; i < arrayCsv.size(); i++) 
@@ -45,13 +50,12 @@ public class DMAdapter958v1 implements DMEnvironment
          return dateMsArray;
     }
     /**
-     * Set and Get array of Leq from CSV file
+     * Get array of Leq from CSV file and Set it to data base
      * @param arrayCsv
      * @return 
      */
     @Override
-    public ArrayList<Double> setLeqArray(ArrayList<String[]> arrayCsv) 
-    {
+    public ArrayList<Double> getLeqArray(ArrayList<String[]> arrayCsv){
         ArrayList<Double> LeqMsArray = new ArrayList<>();
         String[] tab;
         
@@ -65,29 +69,28 @@ public class DMAdapter958v1 implements DMEnvironment
          return LeqMsArray;
     }
      
-  /**
-  * 
-  * @param file
-  * @return Array with data from meter
-  */
-    private ArrayList<String[]> getDataArrayCsv(File file) 
-    {
-        ArrayList<String[]> csvFromMeter = new ArrayList<>();
-        
-        try
-        {
-        BufferedReader csvReader = new BufferedReader(new FileReader(file));
-        String row;
-        while ((row = csvReader.readLine())!= null)
-        {
-            csvFromMeter.add(row.split(Constant.CSV_SPLIT));
+      /**
+      * Set File and get file in CSV format
+      * @param file
+      * @return Array with data from meter in CSV format
+      */
+        private ArrayList<String[]> getDataArrayCsv(File file){
+            ArrayList<String[]> csvFromMeter = new ArrayList<>();
+
+            try
+            {
+            BufferedReader csvReader = new BufferedReader(new FileReader(file));
+            String row;
+            while ((row = csvReader.readLine())!= null)
+            {
+                csvFromMeter.add(row.split(Constant.CSV_SPLIT));
+            }
+            csvReader.close();
+            } 
+            catch (IOException ex) 
+            {
+                System.out.println(ex.toString());
+            }
+            return csvFromMeter;
         }
-        csvReader.close();
-        } 
-        catch (IOException ex) 
-        {
-            System.out.println(ex.toString());
-        }
-        return csvFromMeter;
-    }
 }
